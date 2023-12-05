@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:job_portal_cloudyml/screens/login_hr.dart';
+
+import '../controllers/googlecontroller.dart';
 
 class SignupHR extends StatefulWidget {
   const SignupHR({super.key});
@@ -8,7 +12,19 @@ class SignupHR extends StatefulWidget {
   State<SignupHR> createState() => _SignupHRState();
 }
 
+TextEditingController fnamecontroller = TextEditingController();
+TextEditingController lnamecontroller = TextEditingController();
+TextEditingController emailcontroller = TextEditingController();
+TextEditingController passwordcontroller = TextEditingController();
+TextEditingController cpasswordcontroller = TextEditingController();
+TextEditingController orgnamecontroller = TextEditingController();
+TextEditingController linkedincontroller = TextEditingController();
+TextEditingController estcontroller = TextEditingController();
+String? businesstype;
+
 class _SignupHRState extends State<SignupHR> {
+  var selectedOption;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,38 +46,37 @@ class _SignupHRState extends State<SignupHR> {
                   child: Image.asset("assets/images/cloudyml_logobg.png"),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * .02),
-                child: InkWell(
-      onTap: () {
-      
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginHR()),
-        );
-      },
-      child: Row(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.03,
-            height: MediaQuery.of(context).size.height * 0.04,
-            child: Image.asset("assets/images/image_logo.png"),
-          ),
-          Container(width: MediaQuery.of(context).size.width * 0.02),
-          Center(
-            child: Text(
-              "Go Back",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
-      ),
-    )
-                ),
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * .02),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginHR()),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.03,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            child: Image.asset("assets/images/image_logo.png"),
+                          ),
+                          Container(
+                              width: MediaQuery.of(context).size.width * 0.02),
+                          Center(
+                            child: Text(
+                              "Go Back",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
               ],
             ),
           ),
@@ -114,6 +129,7 @@ class _SignupHRState extends State<SignupHR> {
                                   height:
                                       8.0), // Add some space between the heading and text field
                               TextField(
+                                controller: fnamecontroller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'Type here...',
@@ -143,6 +159,7 @@ class _SignupHRState extends State<SignupHR> {
                                   height:
                                       8.0), // Add some space between the heading and text field
                               TextField(
+                                controller: lnamecontroller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'Type here...',
@@ -180,6 +197,7 @@ class _SignupHRState extends State<SignupHR> {
                               height:
                                   8.0), // Add some space between the heading and text field
                           TextField(
+                            controller: orgnamecontroller,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Type here...',
@@ -215,6 +233,7 @@ class _SignupHRState extends State<SignupHR> {
                               height:
                                   8.0), // Add some space between the heading and text field
                           TextField(
+                            controller: emailcontroller,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Type here...',
@@ -224,48 +243,50 @@ class _SignupHRState extends State<SignupHR> {
                       ),
                     ),
                   ),
-                   Padding(
-          padding: EdgeInsets.only(
+                  Padding(
+                    padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * .02,
                         right: MediaQuery.of(context).size.width * .04,
                         top: MediaQuery.of(context).size.height * .04,
                         bottom: MediaQuery.of(context).size.height * .04),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Select an option:',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8.0), // Add some space between the title and dropdown
-                  DropdownButton<String>(
-                    hint: Text('Select the business type'), // Optional hint text
-                  //  value: selectedOption,
-                    onChanged: (e) {
-                      // Handle dropdown value change
-                      // You may want to update a variable or perform some action here
-                    },
-                    items: <String>[
-                      'Small Sized Business',
-                      'Medium Sized Business',
-                      'Large Sized Business',
-                      // Add more options as needed
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-              Spacer(),
-                Container(
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Select an option:',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                                height:
+                                    8.0), // Add some space between the title and dropdown
+                            DropdownButton<String?>(
+                              hint: Text('Select the business type'),
+                              value: businesstype,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  businesstype = newValue.toString();
+                                });
+                              },
+                              items: <String?>[
+                                'Small Sized Business',
+                                'Medium Sized Business',
+                                'Large Sized Business',
+                              ].map<DropdownMenuItem<String?>>((String? value) {
+                                return DropdownMenuItem<String?>(
+                                  value: value,
+                                  child: Text(value ?? " "),
+                                );
+                              }).toList(),
+                            )
+                          ],
+                        ),
+                        Spacer(),
+                        Container(
                           width: MediaQuery.of(context).size.width * .3,
                           child: Column(
                             children: [
@@ -285,6 +306,7 @@ class _SignupHRState extends State<SignupHR> {
                                   height:
                                       8.0), // Add some space between the heading and text field
                               TextField(
+                                controller: estcontroller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'Type here...',
@@ -293,79 +315,80 @@ class _SignupHRState extends State<SignupHR> {
                             ],
                           ),
                         ),
-                        
-               
-            ],
-          ),),
-          Padding(
-            padding: EdgeInsets.only(
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * .02,
                         right: MediaQuery.of(context).size.width * .02,
                         top: MediaQuery.of(context).size.height * .04,
                         bottom: MediaQuery.of(context).size.height * .04),
-          child: Row(
-            children: [
-              Container(
-                              width: MediaQuery.of(context).size.width * .3,
-                              child: Column(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * .3,
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Enter your Password:',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Spacer()
-                                    ],
-                                  ),
-                                  SizedBox(
-                                      height:
-                                          8.0), // Add some space between the heading and text field
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: 'Type here...',
+                                  Text(
+                                    'Enter your Password:',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  Spacer()
                                 ],
                               ),
-                            ),
-                            Spacer(),
-                             Container(
-                              width: MediaQuery.of(context).size.width * .3,
-                              child: Column(
+                              SizedBox(
+                                  height:
+                                      8.0), // Add some space between the heading and text field
+                              TextField(
+                                controller: passwordcontroller,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Type here...',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          width: MediaQuery.of(context).size.width * .3,
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Reconfirm your Password:',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Spacer()
-                                    ],
-                                  ),
-                                  SizedBox(
-                                      height:
-                                          8.0), // Add some space between the heading and text field
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: 'Type here...',
+                                  Text(
+                                    'Reconfirm your Password:',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  Spacer()
                                 ],
                               ),
-                            ),
-            ],
-          ),
-          ),
-           Padding(
+                              SizedBox(
+                                  height:
+                                      8.0), // Add some space between the heading and text field
+                              TextField(
+                                controller: cpasswordcontroller,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Type here...',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * .02,
                         right: MediaQuery.of(context).size.width * .02,
@@ -391,6 +414,7 @@ class _SignupHRState extends State<SignupHR> {
                               height:
                                   8.0), // Add some space between the heading and text field
                           TextField(
+                            controller: linkedincontroller,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Type here...',
@@ -400,11 +424,11 @@ class _SignupHRState extends State<SignupHR> {
                       ),
                     ),
                   ),
-          Center(child: Container(
-             width: MediaQuery.of(context).size.width * .2,
-             height:  MediaQuery.of(context).size.width * .04,
-            child: MyButton()))
-
+                  Center(
+                      child: Container(
+                          width: MediaQuery.of(context).size.width * .2,
+                          height: MediaQuery.of(context).size.width * .04,
+                          child: MyButton()))
                 ],
               ),
             ),
@@ -414,6 +438,7 @@ class _SignupHRState extends State<SignupHR> {
     );
   }
 }
+
 class MyButton extends StatefulWidget {
   @override
   _MyButtonState createState() => _MyButtonState();
@@ -421,7 +446,7 @@ class MyButton extends StatefulWidget {
 
 class _MyButtonState extends State<MyButton> {
   bool isHovered = false;
-
+  GoogleController _googleController = Get.find();
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -443,19 +468,27 @@ class _MyButtonState extends State<MyButton> {
             },
           ),
         ),
-        onPressed: () {
-          // Handle button click
-          print('Sign Up!');
+        onPressed: () async {
+          UserCredential? user = await _googleController.signUp(
+              emailcontroller.text, passwordcontroller.text);
+          print(user!.user!.uid);
+          _googleController.saveUserDetails(
+              user!.user!.uid,
+              fnamecontroller.text,
+              lnamecontroller.text,
+              orgnamecontroller.text,
+              emailcontroller.text,
+              businesstype!,
+              estcontroller.text,
+              linkedincontroller.text);
         },
-        child: 
-           Text(
-            'Sign Up',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
+        child: Text(
+          'Sign Up',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
           ),
-        
+        ),
       ),
     );
   }

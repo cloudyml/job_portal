@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:job_portal_cloudyml/controllers/googlecontroller.dart';
 import 'package:job_portal_cloudyml/screens/dashboard.dart';
 import 'package:job_portal_cloudyml/screens/signup_hr.dart';
 
@@ -7,6 +11,10 @@ class LoginHR extends StatefulWidget {
   @override
   State<LoginHR> createState() => _LoginHRState();
 }
+
+TextEditingController emailcontroller = TextEditingController();
+TextEditingController passwordcontroller = TextEditingController();
+GoogleController _googleController = Get.find();
 
 class _LoginHRState extends State<LoginHR> {
   @override
@@ -54,6 +62,7 @@ class _LoginHRState extends State<LoginHR> {
                           horizontal: MediaQuery.of(context).size.width * .02,
                           vertical: MediaQuery.of(context).size.width * .02),
                       child: TextField(
+                        controller: emailcontroller,
                         decoration: InputDecoration(
                           hintText: 'User Name',
                           border: OutlineInputBorder(
@@ -69,6 +78,7 @@ class _LoginHRState extends State<LoginHR> {
                           horizontal: MediaQuery.of(context).size.width * .02,
                           vertical: MediaQuery.of(context).size.width * .02),
                       child: TextField(
+                        controller: passwordcontroller,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           border: OutlineInputBorder(
@@ -82,11 +92,24 @@ class _LoginHRState extends State<LoginHR> {
                     width: MediaQuery.of(context).size.width * .40,
                     height: MediaQuery.of(context).size.height * .1,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DashBoard()),
-                        );
+                      onPressed: () async {
+                       UserCredential? result = await  _googleController.signIn(
+                            emailcontroller.text, passwordcontroller.text);
+                       if(result!=null){
+                           
+                       }
+                       else{
+                          Fluttertoast.showToast(
+      msg: "Login failed. Check your email and password.",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+                       }
+                       
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
