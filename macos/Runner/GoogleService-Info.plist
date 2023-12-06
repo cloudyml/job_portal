@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>67056708090-204m5o5sqnqlgqc87j45h6icfbke6e3b.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA5nVKxIMnW4eq4C9rRRO4cpAkY19PJ96s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>67056708090</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.jobPortalCloudyml.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>cloudyml-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cloudyml-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:67056708090:ios:ce77d88f6e6acacd6ddc43</string>
+	<key>DATABASE_URL</key>
+	<string>https://cloudyml-app-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,29 +1,33 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/utils.dart';
-import 'package:myapp/storyboard/vector.dart';
-// import 'package:myapp/storyboard/log-in.dart';
-// import 'package:myapp/page-2/dashboard-.dart';
+import 'package:get/get.dart';
+import 'package:job_portal_cloudyml/firebase_options.dart';
+import 'package:job_portal_cloudyml/screens/login_hr.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-void main() => runApp(MyApp());
+import 'controllers/googlecontroller.dart';
+
+Future<void> main() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
+  Get.put(GoogleController());
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-	@override
-	Widget build(BuildContext context) {
-	return MaterialApp(
-		title: 'Flutter',
-		debugShowCheckedModeBanner: false,
-		scrollBehavior: MyCustomScrollBehavior(),
-		theme: ThemeData(
-		primarySwatch: Colors.blue,
-		),
-		home: Scaffold(
-		body: SingleChildScrollView(
-			child: Scene(),
-		),
-		),
-	);
-	}
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveSizer(builder: (context, orientation, screenType) {
+      return GetMaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const LoginHR(),
+      );
+    });
+  }
 }
