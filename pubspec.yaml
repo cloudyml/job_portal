@@ -40,16 +40,26 @@ dependencies:
   intl: ^0.18.1
   firebase_core: ^2.24.0
   firebase_auth: ^4.15.0
+  firebase_storage:
   cloud_firestore: ^4.13.3
   fluttertoast: ^8.2.4
   responsive_sizer:
   cached_network_image:
   google_fonts:
+  file_picker:
+  path_provider:
+  timeago:
+  go_router: ^6.5.6
+  url_strategy:
+  shared_preferences:
+  provider:
+  rich_text_view:
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  go_router_builder: ^1.0.15
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

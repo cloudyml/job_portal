@@ -4,6 +4,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:job_portal_cloudyml/controllers/googlecontroller.dart';
 import 'package:job_portal_cloudyml/screens/signup_hr.dart';
+import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
+import 'package:job_portal_cloudyml/utils/contants.dart';
+
+import '../controllers/homescreen_controller/home_controller.dart';
 
 class LoginHR extends StatefulWidget {
   const LoginHR({super.key});
@@ -17,6 +21,9 @@ TextEditingController passwordcontroller = TextEditingController();
 GoogleController _googleController = Get.find();
 
 class _LoginHRState extends State<LoginHR> {
+  final homeController = Get.put(HomeController());
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,8 +101,12 @@ class _LoginHRState extends State<LoginHR> {
                     child: ElevatedButton(
                       onPressed: () async {
                         UserCredential? result = await _googleController.signIn(
-                            emailcontroller.text, passwordcontroller.text);
+                            emailcontroller.text,
+                            passwordcontroller.text,
+                            context);
                         if (result != null) {
+                          await homeController.getUserDetails();
+                          routeToDashBoards(context);
                         } else {
                           Fluttertoast.showToast(
                             msg: "Login failed. Check your email and password.",
@@ -137,7 +148,7 @@ class _LoginHRState extends State<LoginHR> {
                           );
                         },
                         child: Text(
-                          "Don't have an account? Click here to create one",
+                          "HR Sign up",
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -150,18 +161,17 @@ class _LoginHRState extends State<LoginHR> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Are you a student?",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        StudentSignupScreen()));
+                            // GoRouter.of(context).push(AppRoutes.studentSignup);
+                          },
                           child: Text(
-                            "Login here",
+                            "Student Sign up",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
