@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:job_portal_cloudyml/controllers/homescreen_controller/home_controller.dart';
 import 'package:job_portal_cloudyml/screens/login_hr.dart';
 
 import '../controllers/googlecontroller.dart';
@@ -438,6 +439,7 @@ class MyButton extends StatefulWidget {
 class _MyButtonState extends State<MyButton> {
   bool isHovered = false;
   GoogleController _googleController = Get.find();
+  final homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -473,6 +475,7 @@ class _MyButtonState extends State<MyButton> {
               businesstype!,
               estcontroller.text,
               linkedincontroller.text);
+          homeController.getUserDetails();
         },
         child: Text(
           'Sign Up',

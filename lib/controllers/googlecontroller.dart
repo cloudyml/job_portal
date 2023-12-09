@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:job_portal_cloudyml/utils/contants.dart';
 
 class GoogleController extends GetxController {
-  Future<UserCredential?> signIn(String email, String password) async {
+  Future<UserCredential?> signIn(String email, String password, context) async {
     try {
+      saveLoginState(context);
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,

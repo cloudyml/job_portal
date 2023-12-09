@@ -1,19 +1,39 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_portal_cloudyml/controllers/student_login/login.dart';
+import 'package:job_portal_cloudyml/routes/app_routes.dart';
 import 'package:job_portal_cloudyml/screens/profile/widgets/userinfo.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../controllers/homescreen_controller/home_controller.dart';
 import '../../utils/colors.dart';
 import '../../utils/contants.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final loginController = Get.put(LoginController());
+  final homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
+        leading: IconButton(
+            onPressed: () {
+              GoRouter.of(context).pushReplacement(AppRoutes.studentHome);
+            },
+            icon: Icon(Icons.arrow_back)),
+        actions: [
+          IconButton(
+              onPressed: () {
+                loginController.logout(context);
+              },
+              icon: Icon(Icons.power_settings_new_sharp)),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,70 +76,89 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     horizontalSizeBoxOf10,
                     horizontalSizeBoxOf10,
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        sizeBoxOf10,
-                        Row(
-                          children: [
-                            Text("Dipen Pau",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: titleFontColor,
-                                  fontFamily: "Semi-bold",
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
-                                )),
-                            IconButton(
-                                onPressed: () {},
-                                splashRadius: 14.sp,
-                                icon: Icon(Icons.edit))
-                          ],
-                        ),
-                        Text("Flutter Developer",
-                            style: TextStyle(
-                              color: subtitleFontColor,
-                              fontSize: 14.sp,
-                            )),
-                        Text("@ CloudyML",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                            )),
-                        SizedBox(width: Adaptive.w(35), child: Divider()),
-                        SizedBox(
-                          width: Adaptive.w(35),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Obx(() {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          sizeBoxOf10,
+                          Row(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  userInformationWidget(
-                                      Icons.location_pin, "Gujarat, India"),
-                                  userInformationWidget(
-                                      Icons.cases_rounded, "2 years"),
-                                  userInformationWidget(
-                                      Icons.wallet, "3.6 LPA"),
-                                ],
-                              ),
-                              SizedBox(height: 30.sp, child: VerticalDivider()),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  userInformationWidget(
-                                      Icons.phone, "+917623969747"),
-                                  userInformationWidget(
-                                      Icons.email, "dipenpaun85@gmail.com"),
-                                  userInformationWidget(
-                                      Icons.calendar_month, "19, Dec 1996"),
-                                ],
-                              ),
+                              Text(homeController.userName.value,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: titleFontColor,
+                                    fontFamily: "Semi-bold",
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                              IconButton(
+                                  onPressed: () {},
+                                  splashRadius: 14.sp,
+                                  icon: Icon(Icons.edit))
                             ],
                           ),
-                        )
-                      ],
-                    ),
+                          Text(homeController.userDomain.value,
+                              style: TextStyle(
+                                color: subtitleFontColor,
+                                fontSize: 14.sp,
+                              )),
+                          homeController.currentCompany.isNotEmpty
+                              ? Text("@ CloudyML",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                  ))
+                              : TextButton(
+                                  onPressed: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.add),
+                                      Text("Add current company"),
+                                    ],
+                                  )),
+                          SizedBox(width: Adaptive.w(35), child: Divider()),
+                          SizedBox(
+                            width: Adaptive.w(35),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    userInformationWidget(
+                                        Icons.location_pin, "Gujarat, India"),
+                                    userInformationWidget(
+                                        Icons.cases_rounded,
+                                        homeController.currentCompany.isNotEmpty
+                                            ? "2 years"
+                                            : "0 years"),
+                                    userInformationWidget(
+                                        Icons.wallet,
+                                        homeController.currentCompany.isNotEmpty
+                                            ? homeController.userSalary.value
+                                            : "yet to start"),
+                                  ],
+                                ),
+                                SizedBox(
+                                    height: 30.sp, child: VerticalDivider()),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    userInformationWidget(Icons.phone,
+                                        homeController.userMobileNumber.value),
+                                    userInformationWidget(Icons.email,
+                                        homeController.userEmail.value),
+                                    userInformationWidget(
+                                        Icons.calendar_month, "19, Dec 1996"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    }),
                     Padding(
                       padding: EdgeInsets.only(top: 10.sp, bottom: 10.sp),
                       child: Container(
