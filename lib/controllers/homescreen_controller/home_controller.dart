@@ -18,7 +18,7 @@ class HomeController extends GetxController {
 
   getUserDetails() async {
     try {
-      final userId = await FirebaseAuth.instance.currentUser!.uid;
+      final userId = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance
           .collection("Users_jobportal")
           .doc(userId)
@@ -35,10 +35,10 @@ class HomeController extends GetxController {
         currentCompany.value = value.data()!["currentCompany"];
         profileUpdatedAt.value = value.data()!["updatedAt"];
       }).whenComplete(() {
-        print("getUserDetails successful");
-      });
+        print('Profile details loaded successfully');
+          });
+    // ignore: empty_catches
     } catch (e) {
-      print("getUserDetails $e");
     }
   }
 

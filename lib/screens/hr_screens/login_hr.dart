@@ -1,13 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:job_portal_cloudyml/controllers/googlecontroller.dart';
-import 'package:job_portal_cloudyml/screens/signup_hr.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/signup_hr.dart';
 import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
 import 'package:job_portal_cloudyml/utils/contants.dart';
 
-import '../controllers/homescreen_controller/home_controller.dart';
+import '../../controllers/homescreen_controller/home_controller.dart';
 
 class LoginHR extends StatefulWidget {
   const LoginHR({super.key});
@@ -44,7 +45,7 @@ class _LoginHRState extends State<LoginHR> {
                     color: Colors.black.withOpacity(0.2),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(2, 3),
+                    offset: const Offset(2, 3),
                   ),
                 ],
               ),
@@ -56,7 +57,7 @@ class _LoginHRState extends State<LoginHR> {
                         vertical: MediaQuery.of(context).size.width * .01),
                     child: Image.asset("assets/images/cloudyml_logobg.png"),
                   ),
-                  Center(
+                  const Center(
                     child: Text(
                       "Enter your Login Credentials",
                       style: TextStyle(
@@ -104,9 +105,21 @@ class _LoginHRState extends State<LoginHR> {
                             emailcontroller.text,
                             passwordcontroller.text,
                             context);
+
                         if (result != null) {
+                          String role = "";
+                          await FirebaseFirestore.instance
+                              .collection("Users_jobportal")
+                              .doc(result.user!.uid)
+                              .get()
+                              .then((value) {
+                            role = value.data()!["role"];
+                          });
+                          print(result.user!.email);
                           await homeController.getUserDetails();
-                          routeToDashBoards(context);
+
+                          // ignore: use_build_context_synchronously
+                          routeToDashBoards( context,role);
                         } else {
                           Fluttertoast.showToast(
                             msg: "Login failed. Check your email and password.",
@@ -125,7 +138,7 @@ class _LoginHRState extends State<LoginHR> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Sign In',
                         style: TextStyle(
                           fontSize: 20.0,
@@ -147,7 +160,7 @@ class _LoginHRState extends State<LoginHR> {
                                 builder: (context) => const SignupHR()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "HR Sign up",
                           style: TextStyle(
                             color: Colors.black,
@@ -170,7 +183,7 @@ class _LoginHRState extends State<LoginHR> {
                                         StudentSignupScreen()));
                             // GoRouter.of(context).push(AppRoutes.studentSignup);
                           },
-                          child: Text(
+                          child: const Text(
                             "Student Sign up",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

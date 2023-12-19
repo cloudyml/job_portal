@@ -14,7 +14,7 @@ import '../../utils/colors.dart';
 import '../../utils/contants.dart';
 
 class StudentHomeScreen extends StatefulWidget {
-  StudentHomeScreen({
+  const StudentHomeScreen({
     super.key,
   });
 
@@ -35,17 +35,17 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Placement Portal"),
+        title: const Text("Placement Portal"),
         automaticallyImplyLeading: false,
         backgroundColor: mainColor,
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.notifications_active_rounded)),
+              onPressed: () {}, icon: const Icon(Icons.notifications_active_rounded)),
           IconButton(
               onPressed: () {
                 GoRouter.of(context).push(AppRoutes.studentProfile);
               },
-              icon: Icon(Icons.person)),
+              icon: const Icon(Icons.person)),
         ],
       ),
       backgroundColor: Colors.white,
@@ -74,7 +74,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                             backgroundImage: const CachedNetworkImageProvider(
                                 "https://yt3.googleusercontent.com/ytc/APkrFKaD-NB9fqXyazQ9xH3zzVExD2PBS5qrepR7POy6Xhw=s900-c-k-c0x00ffffff-no-rj"),
                           ),
-                          Positioned.fill(
+                          const Positioned.fill(
                             child: CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.blue),
@@ -87,17 +87,17 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                     ),
                     sizeBoxOf10,
                     Text(homeController.userName.value,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: titleFontColor,
                           fontFamily: "Semi-bold",
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                         )),
                     Text(homeController.userDomain.value,
-                        style: TextStyle(color: subtitleFontColor)),
+                        style: const TextStyle(color: subtitleFontColor)),
                     homeController.currentCompany.isNotEmpty
                         ? Text("@ ${homeController.currentCompany.value}")
-                        : SizedBox(),
+                        : const SizedBox(),
                     sizeBoxOf10,
                     Text(
                         "Last Updated ${timeago.format(homeController.profileUpdatedAt.value.toDate())}"),
@@ -107,7 +107,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.sp))),
-                        child: Text("Complete Profile"))
+                        child: const Text("Complete Profile"))
                   ],
                 );
               }),
@@ -126,7 +126,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 child: Column(
                   children: [
                     TabBar(
-                      tabs: [
+                      tabs: const [
                         Tab(
                           text: "Jobs",
                         ),
@@ -142,8 +142,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                       unselectedLabelColor: Colors.grey,
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 14.sp),
-                      physics: BouncingScrollPhysics(),
-                      unselectedLabelStyle: TextStyle(color: titleFontColor),
+                      physics: const BouncingScrollPhysics(),
+                      unselectedLabelStyle: const TextStyle(color: titleFontColor),
                     ),
                     Expanded(
                         child: TabBarView(children: [

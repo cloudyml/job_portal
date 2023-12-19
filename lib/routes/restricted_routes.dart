@@ -9,7 +9,7 @@ class AuthMiddleware extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     if (route == '/restricted' && _auth.currentUser == null) {
       // Redirect to login screen if the user is not authenticated
-      return RouteSettings(name: '/login');
+      return const RouteSettings(name: '/login');
     }
 
     // Allow other routes

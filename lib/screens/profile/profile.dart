@@ -26,13 +26,13 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context).pushReplacement(AppRoutes.studentHome);
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
         actions: [
           IconButton(
               onPressed: () {
                 loginController.logout(context);
               },
-              icon: Icon(Icons.power_settings_new_sharp)),
+              icon: const Icon(Icons.power_settings_new_sharp)),
         ],
       ),
       body: SingleChildScrollView(
@@ -59,11 +59,11 @@ class ProfileScreen extends StatelessWidget {
                             child: CircleAvatar(
                               minRadius: 10.sp,
                               maxRadius: 25.sp,
-                              backgroundImage: CachedNetworkImageProvider(
+                              backgroundImage: const CachedNetworkImageProvider(
                                   "https://yt3.googleusercontent.com/ytc/APkrFKaD-NB9fqXyazQ9xH3zzVExD2PBS5qrepR7POy6Xhw=s900-c-k-c0x00ffffff-no-rj"),
                             ),
                           ),
-                          Positioned.fill(
+                          const Positioned.fill(
                             child: CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.blue),
@@ -95,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                               IconButton(
                                   onPressed: () {},
                                   splashRadius: 14.sp,
-                                  icon: Icon(Icons.edit))
+                                  icon: const Icon(Icons.edit))
                             ],
                           ),
                           Text(homeController.userDomain.value,
@@ -110,14 +110,14 @@ class ProfileScreen extends StatelessWidget {
                                   ))
                               : TextButton(
                                   onPressed: () {},
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Icon(Icons.add),
                                       Text("Add current company"),
                                     ],
                                   )),
-                          SizedBox(width: Adaptive.w(35), child: Divider()),
+                          SizedBox(width: Adaptive.w(35), child: const Divider()),
                           SizedBox(
                             width: Adaptive.w(35),
                             child: Row(
@@ -141,7 +141,7 @@ class ProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                                 SizedBox(
-                                    height: 30.sp, child: VerticalDivider()),
+                                    height: 30.sp, child: const VerticalDivider()),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -164,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
                       child: Container(
                         width: Adaptive.w(30),
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               begin: Alignment.topLeft, //Starting point
                               end: Alignment.bottomRight,
                               colors: [
@@ -188,12 +188,12 @@ class ProfileScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       CircleAvatar(
-                                        child: Icon(
+                                        radius: 12.sp,
+                                        backgroundColor: Colors.deepPurple,
+                                        child: const Icon(
                                           Icons.add,
                                           color: Colors.white,
                                         ),
-                                        radius: 12.sp,
-                                        backgroundColor: Colors.deepPurple,
                                       ),
                                       horizontalSizeBoxOf10,
                                       Text(
@@ -243,7 +243,7 @@ class ProfileScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(10.sp)),
-                    child: Column(
+                    child: const Column(
                       children: [],
                     ),
                   ),

@@ -21,10 +21,10 @@ void saveLoginOutState(BuildContext context) {
   Provider.of<LoginState>(context, listen: false).loggedIn = false;
 }
 
-routeToDashBoards(context) {
-  if (userRole.value == "student") {
+routeToDashBoards(BuildContext context,String role) {
+  if (role == "student") {
     GoRouter.of(context).pushReplacement(AppRoutes.studentHome);
-  } else if ((userRole.value == "HR")) {
+  } else if ((role == "HR")) {
     GoRouter.of(context).pushReplacement(AppRoutes.hrDashboard);
   }
 }

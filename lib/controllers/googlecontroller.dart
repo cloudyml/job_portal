@@ -12,7 +12,6 @@ class GoogleController extends GetxController {
         password: password,
       );
     } catch (e) {
-      print("Error during login: $e");
       return null;
     }
   }
@@ -24,7 +23,6 @@ class GoogleController extends GetxController {
         password: password,
       );
     } catch (e) {
-      print("Error during signup: $e");
       return null;
     }
   }

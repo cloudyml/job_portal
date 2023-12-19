@@ -19,11 +19,11 @@ Widget jobsTabWithStream(HomeController controller) {
                 child: SizedBox(
                     height: 20.sp,
                     width: 20.sp,
-                    child: CircularProgressIndicator()));
+                    child: const CircularProgressIndicator()));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           } else {
             return SingleChildScrollView(
               child: Obx(() {
@@ -53,12 +53,12 @@ Widget jobsTabWithStream(HomeController controller) {
                                     ClipRRect(
                                       borderRadius:
                                           BorderRadius.circular(10.sp),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 25.sp,
                                         width: 25.sp,
                                         child: CachedNetworkImage(
                                           errorWidget: (context, url, dynamic) {
-                                            return Icon(Icons.error_outline);
+                                            return const Icon(Icons.error_outline);
                                           },
                                           imageUrl:
                                               "https://png.pngtree.com/png-vector/20190624/ourlarge/pngtree-cvjobjob-search-blue-icon-on-abstract-cloud-background-png-image_1492402.jpg",
@@ -119,7 +119,7 @@ Widget jobsTabWithStream(HomeController controller) {
                               ],
                             ),
                             Text(
-                                "${timeago.format(jobsModel.posted_on!.toDate())}"),
+                                timeago.format(jobsModel.posted_on!.toDate())),
                           ],
                         ),
                       ),
