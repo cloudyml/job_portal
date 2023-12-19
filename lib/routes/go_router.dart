@@ -17,7 +17,6 @@ import 'package:job_portal_cloudyml/screens/student_login/login.dart';
 import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
 import 'package:job_portal_cloudyml/utils/contants.dart';
 import 'package:job_portal_cloudyml/wrapper.dart';
-
 import '../screens/hr_screens/jobcandidate.dart';
 import 'login_state_check.dart';
 
@@ -124,12 +123,7 @@ class MyRouter {
           return MaterialPage(child: SignupHR());
         },
       ),
-      GoRoute(
-        path: AppRoutes.hrcandidateview,
-        pageBuilder: (context, state) {
-          return  MaterialPage(child: CandidatePage());
-        },
-      ),
+      
     ],
   );
 }

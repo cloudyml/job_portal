@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../routes/app_routes.dart';
 
 class CandidateSearchPage extends StatefulWidget {
   @override
@@ -22,7 +25,18 @@ class _CandidateSearchPageState extends State<CandidateSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Candidate Search'),
+        title: Text(
+          'Candidate search',
+          style: TextStyle(color: Colors.red),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.red,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).pushReplacement(AppRoutes.hrJobPosting);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,6 +112,10 @@ class _CandidateSearchPageState extends State<CandidateSearchPage> {
   Widget _buildFilterButton(String title, String value, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor:
+             Colors.red,
+      ),
       child: Text('$title: $value'),
     );
   }
@@ -217,5 +235,3 @@ class Candidate {
 
   Candidate({required this.name, required this.skills, required this.experience, required this.location});
 }
-
-

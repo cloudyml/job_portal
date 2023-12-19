@@ -14,14 +14,14 @@ class _JobPostingState extends State<JobPosting> {
   final List<JobPost> jobPosts = [
     JobPost(
       title: 'Software Engineer',
-      company: 'ABC Corp',
+      company: 'Developer',
       location: 'CityA',
       salary: '\$80,000 - \$100,000',
       imageUrl: 'https://d3kqdc25i4tl0t.cloudfront.net/articles/content/517_240659_tech.hero.jpg',
     ),
     JobPost(
       title: 'HR Manager',
-      company: 'XYZ Inc',
+      company: 'Developer',
       location: 'CityB',
       salary: '\$70,000 - \$90,000',
       imageUrl: 'https://d3kqdc25i4tl0t.cloudfront.net/articles/content/517_240659_tech.hero.jpg',
@@ -65,7 +65,9 @@ class _JobPostingState extends State<JobPosting> {
                       ),
                      
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                                  GoRouter.of(context).pushReplacement(AppRoutes.hrApplicantSearch);                    
+                        },
                         icon: Icon(
                           Icons.search,
                           color: Colors.black,
@@ -157,7 +159,7 @@ class JobPostCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
                 child: Image.network(
-                  jobPost.imageUrl,
+                  'https://images.pexels.com/photos/5614135/pexels-photo-5614135.jpeg?auto=compress&cs=tinysrgb&w=600',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -175,7 +177,7 @@ class JobPostCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8.0),
-                  Text('Company: ${jobPost.company}'),
+                  Text('Role: ${jobPost.company}'),
                   Text('Location: ${jobPost.location}'),
                   Text('Salary: ${jobPost.salary}'),
                 ],
@@ -211,16 +213,19 @@ class CreateJobButton extends StatefulWidget {
 class _CreateJobButtonState extends State<CreateJobButton> {
   Color _buttonColor = Colors.red;
 
-  void _changeColor() {
-    setState(() {
-      _buttonColor = Colors.green;
-    });
-  }
+void _changeColor() {
+  setState(() {
+    _buttonColor = (_buttonColor == Colors.red) ? Colors.green : Colors.red;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: _changeColor,
+      onPressed:(){ 
+         GoRouter.of(context).pushReplacement(AppRoutes.hrJobView);
+        _changeColor;
+        },
       onLongPress: _changeColor,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(

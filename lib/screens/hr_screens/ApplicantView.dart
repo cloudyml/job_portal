@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../routes/app_routes.dart';
 import 'jobcandidate.dart';
 
-class CandidateDetailPage extends StatelessWidget {
+class CandidateDetailPage extends StatefulWidget {
   final Candidate candidate;
 
   const CandidateDetailPage({required this.candidate});
 
   @override
+  State<CandidateDetailPage> createState() => _CandidateDetailPageState();
+}
+
+class _CandidateDetailPageState extends State<CandidateDetailPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Candidate Details'),
-        backgroundColor: Colors.red,
-        elevation: 0, // No shadow under the app bar
+       title: Text(
+          'Candidate Details',
+          style: TextStyle(color: Colors.red), // Set title text color to red
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.red, // Set appbar background color to white
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
@@ -27,27 +33,22 @@ class CandidateDetailPage extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: InkWell(
-            onTap: () {
-                GoRouter.of(context).pushReplacement(AppRoutes.hrApplicantView);
-            },
-            child: Card(
-              elevation: 8.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildDetailRow('Name', candidate.name),
-                    _buildDetailRow('Position', candidate.positionApplied),
-                    _buildDetailRow('Status', candidate.status),
-                    // Add more details as needed
-                  ],
-                ),
+          child: Card(
+            elevation: 8.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildDetailRow('Name', widget.candidate.name),
+                  _buildDetailRow('Position', widget.candidate.positionApplied),
+                  _buildDetailRow('Status', widget.candidate.status),
+                  // Add more details as needed
+                ],
               ),
             ),
           ),

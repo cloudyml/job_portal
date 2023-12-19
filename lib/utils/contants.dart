@@ -13,6 +13,7 @@ final horizontalSizeBoxOf10 = SizedBox(width: 10.sp);
 final userRole = ''.obs;
 const String loggedInKey = 'LoggedIn';
 
+
 void saveLoginState(BuildContext context) {
   Provider.of<LoginState>(context, listen: false).loggedIn = true;
 }
