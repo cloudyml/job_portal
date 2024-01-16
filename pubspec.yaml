@@ -54,6 +54,14 @@ dependencies:
   shared_preferences:
   provider:
   rich_text_view:
+  hexcolor:
+  hovering:
+  url_launcher:
+  dotted_border:
+  choice:
+  chips_choice:
+  pdfx:
+  internet_file:
 
 
 dev_dependencies:

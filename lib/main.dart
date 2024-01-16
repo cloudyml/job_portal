@@ -51,8 +51,12 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-                // primaryColor: Colors.deepPurple,
-                colorSchemeSeed: Colors.deepPurple),
+              primarySwatch: Colors.teal,
+              primaryColor: Colors.white,
+              textTheme: TextTheme(
+                subtitle1: TextStyle(color: Colors.white),
+              ),
+            ),
           );
         }),
       ),

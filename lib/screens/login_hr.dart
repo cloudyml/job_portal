@@ -2,12 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_portal_cloudyml/controllers/googlecontroller.dart';
 import 'package:job_portal_cloudyml/screens/signup_hr.dart';
 import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
+import 'package:job_portal_cloudyml/utils/colors.dart';
 import 'package:job_portal_cloudyml/utils/contants.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../controllers/homescreen_controller/home_controller.dart';
+import '../routes/app_routes.dart';
 
 class LoginHR extends StatefulWidget {
   const LoginHR({super.key});
@@ -26,6 +30,8 @@ class _LoginHRState extends State<LoginHR> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isPhone = screenWidth < 600;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -34,8 +40,12 @@ class _LoginHRState extends State<LoginHR> {
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height * .1),
             child: Container(
-              height: MediaQuery.of(context).size.height * .85,
-              width: MediaQuery.of(context).size.width * .50,
+              height: isPhone
+                  ? Adaptive.h(80)
+                  : MediaQuery.of(context).size.height * .85,
+              width: isPhone
+                  ? Adaptive.w(80)
+                  : MediaQuery.of(context).size.width * .50,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -49,12 +59,13 @@ class _LoginHRState extends State<LoginHR> {
                 ],
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * .1,
                         vertical: MediaQuery.of(context).size.width * .01),
-                    child: Image.asset("assets/images/cloudyml_logobg.png"),
+                    child: Image.asset(companyLogo),
                   ),
                   Center(
                     child: Text(
@@ -66,12 +77,17 @@ class _LoginHRState extends State<LoginHR> {
                   Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * .02,
+                          horizontal: isPhone
+                              ? 15.sp
+                              : MediaQuery.of(context).size.width * .02,
                           vertical: MediaQuery.of(context).size.width * .02),
                       child: TextField(
                         controller: emailcontroller,
+                        style: TextStyle(color: mainColor),
+                        autofocus: true,
                         decoration: InputDecoration(
-                          hintText: 'User Name',
+                          // hintText: 'User Name',
+                          labelText: "Username",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -82,12 +98,40 @@ class _LoginHRState extends State<LoginHR> {
                   Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * .02,
+                          horizontal: isPhone
+                              ? 15.sp
+                              : MediaQuery.of(context).size.width * .02,
                           vertical: MediaQuery.of(context).size.width * .02),
                       child: TextField(
                         controller: passwordcontroller,
+                        style: TextStyle(color: mainColor),
+                        onSubmitted: (value) async {
+                          UserCredential? result =
+                              await _googleController.signIn(
+                                  emailcontroller.text,
+                                  passwordcontroller.text,
+                                  context);
+                          if (result != null) {
+                            // await homeController.getUserDetails();
+                            // routeToDashBoards(context);
+                            GoRouter.of(context)
+                                .pushReplacement(AppRoutes.studentHome);
+                          } else {
+                            Fluttertoast.showToast(
+                              msg:
+                                  "Login failed. Check your email and password.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          }
+                        },
                         decoration: InputDecoration(
-                          hintText: 'Password',
+                          // hintText: 'Password',
+                          labelText: "Password",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -96,43 +140,62 @@ class _LoginHRState extends State<LoginHR> {
                     ),
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * .40,
-                    height: MediaQuery.of(context).size.height * .1,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        UserCredential? result = await _googleController.signIn(
-                            emailcontroller.text,
-                            passwordcontroller.text,
-                            context);
-                        if (result != null) {
-                          await homeController.getUserDetails();
-                          routeToDashBoards(context);
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: "Login failed. Check your email and password.",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                    height: 20.sp,
+                  ),
+                  SizedBox(
+                    width: isPhone
+                        ? Adaptive.w(40)
+                        : MediaQuery.of(context).size.width * .40,
+                    height: isPhone
+                        ? Adaptive.w(10)
+                        : MediaQuery.of(context).size.height * .1,
+                    child: Obx(() {
+                      return ElevatedButton(
+                        onPressed: () async {
+                          UserCredential? result =
+                              await _googleController.signIn(
+                                  emailcontroller.text,
+                                  passwordcontroller.text,
+                                  context);
+                          if (result != null) {
+                            // await homeController.getUserDetails();
+                            _googleController.isLoading.value = false;
+                            // routeToDashBoards(context);
+                            GoRouter.of(context)
+                                .pushReplacement(AppRoutes.studentHome);
+                          } else {
+                            Fluttertoast.showToast(
+                              msg:
+                                  "Login failed. Check your email and password.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                            _googleController.isLoading.value = false;
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                        child: _googleController.isLoading.isTrue
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      );
+                    }),
                   ),
                   Padding(
                     padding: EdgeInsets.only(

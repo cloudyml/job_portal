@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
+import 'package:job_portal_cloudyml/controllers/profile/profile_controller.dart';
 import 'package:job_portal_cloudyml/controllers/student_login/login.dart';
-import 'package:job_portal_cloudyml/routes/app_routes.dart';
+import 'package:job_portal_cloudyml/screens/profile/widgets/dialog_namechange.dart';
+import 'package:job_portal_cloudyml/screens/profile/widgets/quicklinks.dart';
+import 'package:job_portal_cloudyml/screens/profile/widgets/student_resume_section.dart';
 import 'package:job_portal_cloudyml/screens/profile/widgets/userinfo.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controllers/homescreen_controller/home_controller.dart';
+import '../../controllers/student_login/signup.dart';
 import '../../utils/colors.dart';
 import '../../utils/contants.dart';
 
@@ -16,28 +19,20 @@ class ProfileScreen extends StatelessWidget {
 
   final loginController = Get.put(LoginController());
   final homeController = Get.put(HomeController());
+  final profileController = Get.put(ProfileController());
+  final signUpController = Get.put(SignupController());
+  RxBool isHovered = false.obs;
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    bool isPhone = screenWidth < 600;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-        leading: IconButton(
-            onPressed: () {
-              GoRouter.of(context).pushReplacement(AppRoutes.studentHome);
-            },
-            icon: Icon(Icons.arrow_back)),
-        actions: [
-          IconButton(
-              onPressed: () {
-                loginController.logout(context);
-              },
-              icon: Icon(Icons.power_settings_new_sharp)),
-        ],
-      ),
+      backgroundColor: Colors.white.withOpacity(0.1),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            topMenuBar(context, isPhone),
             Padding(
               padding: EdgeInsets.only(top: 15.sp),
               child: Container(
@@ -49,30 +44,87 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.sp),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.sp),
-                            child: CircleAvatar(
-                              minRadius: 10.sp,
-                              maxRadius: 25.sp,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  "https://yt3.googleusercontent.com/ytc/APkrFKaD-NB9fqXyazQ9xH3zzVExD2PBS5qrepR7POy6Xhw=s900-c-k-c0x00ffffff-no-rj"),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            profileController.pickProfilePicture();
+                          },
+                          onHover: (value) {
+                            isHovered.value = value;
+                          },
+                          borderRadius: BorderRadius.circular(30.sp),
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10.sp),
+                            child: Obx(() {
+                              return Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(10.sp),
+                                    child: Obx(() {
+                                      return CircleAvatar(
+                                        minRadius: 10.sp,
+                                        maxRadius: 25.sp,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                                homeController
+                                                    .profile_picture.value),
+                                      );
+                                    }),
+                                  ),
+                                  Positioned.fill(
+                                    child: Obx(() {
+                                      return CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.teal),
+                                        value: homeController
+                                            .completionPercentage.value
+                                            .toPrecision(2)
+                                            .toDouble(),
+                                        strokeWidth: 6,
+                                      );
+                                    }),
+                                  ),
+                                  isHovered.value
+                                      ? Padding(
+                                          padding: EdgeInsets.all(10.sp),
+                                          child: CircleAvatar(
+                                            minRadius: 10.sp,
+                                            maxRadius: 25.sp,
+                                            backgroundColor: Colors.black38,
+                                            child: Text(
+                                              "Change Profile Picture",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13.sp),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox()
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.sp),
+                          child: Container(
+                            padding: EdgeInsets.all(7.sp),
+                            decoration: BoxDecoration(
+                                color: Colors.teal,
+                                borderRadius: BorderRadius.circular(20.sp)),
+                            child: Text(
+                              "${homeController.completionPercentage.value.toPrecision(2).toDouble() * 100}%",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12.sp),
                             ),
                           ),
-                          Positioned.fill(
-                            child: CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.blue),
-                              value: 0.80,
-                              strokeWidth: 6,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     horizontalSizeBoxOf10,
                     horizontalSizeBoxOf10,
@@ -93,7 +145,9 @@ class ProfileScreen extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                   )),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showAlertDialog(context);
+                                  },
                                   splashRadius: 14.sp,
                                   icon: Icon(Icons.edit))
                             ],
@@ -109,7 +163,9 @@ class ProfileScreen extends StatelessWidget {
                                     fontSize: 12.sp,
                                   ))
                               : TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    dialogToAddCompanyName(context);
+                                  },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -127,15 +183,21 @@ class ProfileScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     userInformationWidget(
-                                        Icons.location_pin, "Gujarat, India"),
+                                        Icons.location_pin,
+                                        homeController.residence.isNotEmpty
+                                            ? homeController.residence
+                                                .toString()
+                                            : "Unknown"),
                                     userInformationWidget(
                                         Icons.cases_rounded,
-                                        homeController.currentCompany.isNotEmpty
-                                            ? "2 years"
+                                        homeController
+                                                .years_of_experience.isNotEmpty
+                                            ? homeController.years_of_experience
+                                                .toString()
                                             : "0 years"),
                                     userInformationWidget(
                                         Icons.wallet,
-                                        homeController.currentCompany.isNotEmpty
+                                        homeController.userSalary.isNotEmpty
                                             ? homeController.userSalary.value
                                             : "yet to start"),
                                   ],
@@ -165,12 +227,12 @@ class ProfileScreen extends StatelessWidget {
                         width: Adaptive.w(30),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              begin: Alignment.topLeft, //Starting point
-                              end: Alignment.bottomRight,
+                              begin: Alignment.centerLeft, //Starting point
+                              end: Alignment.centerRight,
                               colors: [
-                                Colors.purpleAccent,
-                                Colors.blue,
-                                Colors.white
+                                Colors.teal.withOpacity(0.7),
+                                Colors.teal.withOpacity(0.5),
+                                Colors.teal.withOpacity(0.35)
                               ],
                               stops: [0.2, 0.5, 0.8],
                             ),
@@ -213,6 +275,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(15.sp))),
@@ -234,28 +297,42 @@ class ProfileScreen extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsets.all(15.sp),
                   child: Container(
                     width: Adaptive.w(20),
-                    height: Adaptive.h(100),
+                    padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(10.sp)),
-                    child: Column(
-                      children: [],
-                    ),
+                    child: quickLinksWidget(context),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.all(15.sp),
-                  child: Container(
-                    width: Adaptive.w(60),
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10.sp)),
-                    height: Adaptive.h(100),
+                  child: Column(
+                    children: [
+                      commonContainer(
+                          child: studentResumeSection(
+                              homeController, signUpController),
+                          topPadding: 10.sp),
+                      commonContainer(
+                          child: resumeHeadline(homeController, context)),
+                      commonContainer(
+                          child: keySkills(homeController, context)),
+                      commonContainer(
+                          child: employmentSection(context), topPadding: 10.sp),
+                      commonContainer(
+                          child: educationSection(context), topPadding: 10.sp),
+                      commonContainer(
+                          child:
+                              profileSummarySection(context, profileController),
+                          topPadding: 10.sp),
+                      commonContainer(
+                          child: languageProficiency(), topPadding: 10.sp)
+                    ],
                   ),
                 ),
               ],

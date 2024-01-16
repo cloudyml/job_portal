@@ -24,7 +24,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
           GoRouter.of(context).pushReplacement(AppRoutes.hrDashboard);
         }
       } else {
-        GoRouter.of(context).push(AppRoutes.authWrapper);
+        GoRouter.of(context).push(AppRoutes.studentHome);
       }
     });
     super.initState();

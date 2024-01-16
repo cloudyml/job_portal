@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ListedJobsModel {
+class DetailedJobModel {
   String? company_name;
   String? job_domain;
-  String? job_location;
+  String? job_locaton;
   String? jobid;
   int? number_of_openings;
   int? number_students_applied;
@@ -22,10 +22,11 @@ class ListedJobsModel {
   String? offered_salary;
   String? interview_type;
 
-  ListedJobsModel(
+  DetailedJobModel(
       {this.company_name,
+      this.required_skills,
       this.job_domain,
-      this.job_location,
+      this.job_locaton,
       this.jobid,
       this.number_of_openings,
       this.required_exp,
@@ -41,14 +42,15 @@ class ListedJobsModel {
       this.year_of_passing,
       this.offered_salary,
       this.job_questions,
-      this.interview_type,
-      this.required_skills});
+      this.interview_type});
 
-  factory ListedJobsModel.fromMap(Map<String, dynamic> map) {
-    return ListedJobsModel(
+  factory DetailedJobModel.fromMap(Map<String, dynamic> map) {
+    return DetailedJobModel(
+        job_questions: map['job_questions'] ?? [],
+        required_skills: map['required_skills'] ?? [],
         company_name: map['company_name'],
         job_domain: map['job_domain'],
-        job_location: map['job_location'],
+        job_locaton: map['job_location'],
         jobid: map['jobid'],
         number_of_openings: map['number_of_openings'],
         number_students_applied: map['number_students_applied'],
@@ -63,8 +65,6 @@ class ListedJobsModel {
         streams: map['streams'],
         year_of_passing: map['year_of_passing'],
         offered_salary: map["offered_salary"],
-        job_questions: map['job_questions'] ?? [],
-        required_skills: map['required_skills'] ?? [],
         interview_type: map['interview_type']);
   }
 
@@ -72,7 +72,7 @@ class ListedJobsModel {
     return {
       'company_name': company_name,
       'job_domain': job_domain,
-      'job_location': job_location,
+      'job_location': job_locaton,
       'jobid': jobid,
       'number_of_openings': number_of_openings,
       'required_exp': required_exp,

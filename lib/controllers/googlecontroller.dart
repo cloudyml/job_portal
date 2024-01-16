@@ -4,8 +4,11 @@ import 'package:get/get.dart';
 import 'package:job_portal_cloudyml/utils/contants.dart';
 
 class GoogleController extends GetxController {
+  RxBool isLoading = false.obs;
+
   Future<UserCredential?> signIn(String email, String password, context) async {
     try {
+      isLoading.value = true;
       saveLoginState(context);
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -13,6 +16,7 @@ class GoogleController extends GetxController {
       );
     } catch (e) {
       print("Error during login: $e");
+      isLoading.value = false;
       return null;
     }
   }
@@ -42,6 +46,7 @@ class GoogleController extends GetxController {
         .collection('Users_jobportal')
         .doc(userId)
         .set({
+      'id': userId,
       'firstname': firstname,
       'lastname': lastname,
       'organizational email': orgemail,

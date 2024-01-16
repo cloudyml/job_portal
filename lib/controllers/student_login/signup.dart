@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_portal_cloudyml/controllers/homescreen_controller/home_controller.dart';
 import 'package:job_portal_cloudyml/utils/contants.dart';
 
 import '../../routes/app_routes.dart';
@@ -23,7 +24,6 @@ class SignupController extends GetxController {
   RxString password = ''.obs;
   RxString confirmPassword = ''.obs;
   RxBool isLoading = false.obs;
-
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> signup(context) async {
@@ -59,7 +59,12 @@ class SignupController extends GetxController {
         'role': 'student',
         'created': DateTime.now(),
         'updatedAt': DateTime.now(),
-        'uid': uid,
+        'id': uid,
+        'profileCompletionPercentage': 0,
+        'resume_name': "",
+        'resumeUrl': "",
+        'resume_headline': "",
+        'list_of_skills': []
         // Add more fields as needed
       });
       uploadResume();
@@ -79,7 +84,8 @@ class SignupController extends GetxController {
 
   Future<void> selectResume() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      FilePickerResult? result = await FilePicker.platform
+          .pickFiles(type: FileType.custom, allowedExtensions: ["PDF"]);
 
       if (result != null) {
         // Use `bytes` instead of `path` for web
@@ -90,6 +96,8 @@ class SignupController extends GetxController {
       Get.snackbar('Error', 'Failed to pick a file. $e');
     }
   }
+
+  final homeController = Get.put(HomeController());
 
   Future<void> uploadResume() async {
     try {
@@ -107,7 +115,7 @@ class SignupController extends GetxController {
       isLoading(true);
 
       final resumeRef = FirebaseStorage.instance.ref(
-          'jobPortal/${user.email}/${DateTime.now().millisecondsSinceEpoch}_resume.pdf');
+          'resumes_jobPortal/${user.email}/${DateTime.now().millisecondsSinceEpoch}_resume.pdf');
 
       // Use `putData` instead of `putFile` for web
       await resumeRef.putData(resumeBytes.value!);
@@ -119,9 +127,11 @@ class SignupController extends GetxController {
           .collection('Users_jobportal')
           .doc(user.uid)
           .update({
+        "resume_name": resumeName.value,
         'resumeUrl': resumeUrl,
       });
-
+      homeController.resume_name.value = resumeName.value;
+      homeController.userResumeLink.value = resumeUrl;
       isLoading(false);
       Get.snackbar('Success', 'Resume uploaded successfully!');
     } catch (e) {

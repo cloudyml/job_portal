@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_portal_cloudyml/routes/app_routes.dart';
 import 'package:job_portal_cloudyml/screens/dashboard.dart';
+import 'package:job_portal_cloudyml/screens/detailed_job/detailed_job.dart';
 import 'package:job_portal_cloudyml/screens/home/home.dart';
 import 'package:job_portal_cloudyml/screens/login_hr.dart';
 import 'package:job_portal_cloudyml/screens/profile/profile.dart';
 import 'package:job_portal_cloudyml/screens/signup_hr.dart';
 import 'package:job_portal_cloudyml/screens/student_login/login.dart';
 import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
-import 'package:job_portal_cloudyml/utils/contants.dart';
 import 'package:job_portal_cloudyml/wrapper.dart';
 
 import 'login_state_check.dart';
@@ -29,21 +29,21 @@ class MyRouter {
       String currentURL = html.window.location.href;
       print('currentURL: $currentURL');
 
-      if (currentURL.contains(AppRoutes.studentSignup)) {
-        return (AppRoutes.studentSignup);
-      } else {
-        if (!loggedIn && !goingToLogin) {
-          return (AppRoutes.authWrapper);
-        } else if (loggedIn && goingToLogin) {
-          if (userRole.value == "student") {
-            return (AppRoutes.studentHome);
-          } else if (userRole.value == "HR") {
-            return (AppRoutes.hrDashboard);
-          }
-        } else {
-          return null;
-        }
-      }
+      // if (currentURL.contains(AppRoutes.studentSignup)) {
+      //   return (AppRoutes.studentSignup);
+      // } else {
+      //   if (!loggedIn && !goingToLogin) {
+      //     return (AppRoutes.studentHome);
+      //   } else if (loggedIn && goingToLogin) {
+      //     if (userRole.value == "student") {
+      //       return (AppRoutes.studentHome);
+      //     } else if (userRole.value == "HR") {
+      //       return (AppRoutes.hrDashboard);
+      //     }
+      //   } else {
+      //     return null;
+      //   }
+      // }
     },
     routes: <RouteBase>[
       GoRoute(
@@ -92,6 +92,18 @@ class MyRouter {
         path: AppRoutes.hrSignUP,
         pageBuilder: (context, state) {
           return MaterialPage(child: SignupHR());
+        },
+      ),
+      GoRoute(
+        name: AppRoutes.detailedJobScreen,
+        path: AppRoutes.detailedJobPath,
+        pageBuilder: (context, state) {
+          String index = state.queryParams["job"] as String;
+          return MaterialPage(
+              key: state.pageKey,
+              child: DetailedJobScreen(
+                index: index.toString(),
+              ));
         },
       ),
     ],

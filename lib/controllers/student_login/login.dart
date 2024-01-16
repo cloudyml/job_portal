@@ -4,30 +4,37 @@ import 'package:go_router/go_router.dart';
 
 import '../../routes/app_routes.dart';
 import '../../utils/contants.dart';
+import '../homescreen_controller/home_controller.dart';
 
 class LoginController extends GetxController {
   RxString email = ''.obs;
   RxString password = ''.obs;
   RxBool isLoading = false.obs;
-
+  final homeController = Get.put(HomeController());
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> login(context) async {
+    var result;
     try {
       isLoading(true);
       if (email.isNotEmpty && password.isNotEmpty) {
         saveLoginState(context);
-        await auth.signInWithEmailAndPassword(
+        result = await auth.signInWithEmailAndPassword(
             email: email.value, password: password.value);
-        GoRouter.of(context).pushReplacement(AppRoutes.studentHome);
+        if (result.user != null) {
+          homeController.loggedIN.value = true;
+          GoRouter.of(context).push(AppRoutes.studentHome);
+          isLoading(false);
+        }
       } else {
-        Get.snackbar('Error', 'Login failed. Check your credentials.');
+        showToast("Please write email and password to continue.");
+        isLoading(false);
       }
-
       isLoading(false);
     } catch (e) {
+      print("object $e");
       isLoading(false);
-      Get.snackbar('Error', 'Login failed. Check your credentials.');
+      showToast("Login failed. Check your credentials.");
     }
   }
 
