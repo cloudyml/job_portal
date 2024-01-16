@@ -4,14 +4,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_portal_cloudyml/controllers/googlecontroller.dart';
-import 'package:job_portal_cloudyml/screens/signup_hr.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/signup_hr.dart';
 import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
 import 'package:job_portal_cloudyml/utils/colors.dart';
 import 'package:job_portal_cloudyml/utils/contants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../controllers/homescreen_controller/home_controller.dart';
-import '../routes/app_routes.dart';
+import '../../controllers/homescreen_controller/home_controller.dart';
+import '../../routes/app_routes.dart';
 
 class LoginHR extends StatefulWidget {
   const LoginHR({super.key});

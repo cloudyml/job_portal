@@ -25,7 +25,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final LoginState loginState;
 
-  MyApp({super.key, required this.loginState});
+  const MyApp({super.key, required this.loginState});
 
   @override
   Widget build(BuildContext context) {

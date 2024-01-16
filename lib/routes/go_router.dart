@@ -1,18 +1,23 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_portal_cloudyml/routes/app_routes.dart';
-import 'package:job_portal_cloudyml/screens/dashboard.dart';
 import 'package:job_portal_cloudyml/screens/detailed_job/detailed_job.dart';
 import 'package:job_portal_cloudyml/screens/home/home.dart';
-import 'package:job_portal_cloudyml/screens/login_hr.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/ApplicantSearch.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/JobPosting.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/JobPostingview.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/dashboard.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/login_hr.dart';
+import 'package:job_portal_cloudyml/screens/hr_screens/signup_hr.dart';
 import 'package:job_portal_cloudyml/screens/profile/profile.dart';
-import 'package:job_portal_cloudyml/screens/signup_hr.dart';
 import 'package:job_portal_cloudyml/screens/student_login/login.dart';
 import 'package:job_portal_cloudyml/screens/student_login/signup.dart';
 import 'package:job_portal_cloudyml/wrapper.dart';
 
+import '../screens/hr_screens/jobcandidate.dart';
 import 'login_state_check.dart';
 
 class MyRouter {
@@ -27,13 +32,12 @@ class MyRouter {
       final loggedIn = loginState.loggedIn;
       final goingToLogin = state.location == (AppRoutes.authWrapper);
       String currentURL = html.window.location.href;
-      print('currentURL: $currentURL');
 
       // if (currentURL.contains(AppRoutes.studentSignup)) {
       //   return (AppRoutes.studentSignup);
       // } else {
       //   if (!loggedIn && !goingToLogin) {
-      //     return (AppRoutes.studentHome);
+      //     return (AppRoutes.authWrapper);
       //   } else if (loggedIn && goingToLogin) {
       //     if (userRole.value == "student") {
       //       return (AppRoutes.studentHome);
@@ -80,6 +84,30 @@ class MyRouter {
         path: AppRoutes.studentLogin,
         pageBuilder: (context, state) {
           return MaterialPage(child: StudentLoginScreen());
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.hrJobPosting,
+        pageBuilder: (context, state) {
+          return MaterialPage(child: JobPosting());
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.hrJobView,
+        pageBuilder: (context, state) {
+          return MaterialPage(child: JobPostingView());
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.hrApplicantSearch,
+        pageBuilder: (context, state) {
+          return MaterialPage(child: CandidateSearchPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.hrjobcandidateview,
+        pageBuilder: (context, state) {
+          return MaterialPage(child: CandidatePage());
         },
       ),
       GoRoute(
