@@ -407,6 +407,10 @@ class _SelectedJobApplicantWidgetState
                           ],
                         ),
                       ),
+                      data.length < 1
+          ? Center(
+              child: Text("Currently no applicants available"),
+            ):
                       rp.Device.screenType!= rp.ScreenType.mobile?Container(
                         child: Expanded(
                           child: GridView.builder(

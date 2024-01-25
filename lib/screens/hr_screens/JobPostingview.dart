@@ -273,6 +273,7 @@ FirestoreService firestoreService = FirestoreService();
       TextEditingController controller) {
     return TextFormField(
       controller: controller,
+      style: TextStyle(color:Colors.black),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
@@ -369,6 +370,7 @@ FirestoreService firestoreService = FirestoreService();
         return AlertDialog(
           title: Text('Add Skill'),
           content: TextField(
+             style: TextStyle(color:Colors.black),
             controller: controller,
             decoration: InputDecoration(labelText: 'Enter a skill'),
           ),
@@ -398,6 +400,7 @@ FirestoreService firestoreService = FirestoreService();
       TextEditingController controller) {
     return TextFormField(
       controller: controller,
+       style: TextStyle(color:Colors.black),
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: label,
@@ -506,6 +509,7 @@ FirestoreService firestoreService = FirestoreService();
         return AlertDialog(
           title: Text('Add Company Benefit'),
           content: TextField(
+             style: TextStyle(color:Colors.black),
             controller: controller,
             decoration: InputDecoration(labelText: 'Enter a benefit'),
           ),
@@ -712,7 +716,7 @@ FirestoreService firestoreService = FirestoreService();
                   (String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value, style: TextStyle(color: Colors.black),),
                     );
                   },
                 ).toList(),
@@ -723,6 +727,7 @@ FirestoreService firestoreService = FirestoreService();
               SizedBox(height: 8.0),
               Text('Not listed? Type here:'),
               TextField(
+                 style: TextStyle(color:Colors.black),
                 controller: controller,
               ),
             ],
@@ -804,6 +809,7 @@ FirestoreService firestoreService = FirestoreService();
         return AlertDialog(
           title: Text('Add Question'),
           content: TextField(
+             style: TextStyle(color:Colors.black),
             controller: controller,
             decoration: InputDecoration(labelText: 'Enter a question'),
           ),
